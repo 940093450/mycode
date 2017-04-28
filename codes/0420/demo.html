@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .title {
+            background-color: red;
+            color: #fff;
+            font-size: 300%;
+        }
+        
+        .sub {
+            background-color: black;
+            color: gray;
+            font-size: 200%;
+        }
+        
+        .line {
+            width: 1px;
+            height: 100vh;
+            position: fixed;
+            background-color: blue;
+            top: 0;
+        }
+        
+        .p400 {
+            left: 400px;
+        }
+        
+        .p900 {
+            left: 900px;
+        }
+        
+        .menu {
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid #000;
+        }
+        
+        .menu li {
+            padding: 0;
+            margin: 0;
+            display: inline-block;
+            background-color: #999;
+            color: #000;
+        }
+        
+        @media screen and (min-width: 200px) and (max-width:399px) {
+            .title {
+                font-size: 200%;
+            }
+            .sub {
+                font-size: 150%;
+            }
+            .menu {
+                display: none;
+            }
+        }
+        
+        @media screen and (min-width:400px) and (max-width: 899px) {
+            .title,
+            .sub {
+                text-align: center;
+                float: left;
+                font-size: 200%;
+                width: 50%;
+            }
+            .menu {
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+            .menu li {
+                display: block;
+            }
+        }
+        
+        @media screen and (min-width: 900px) {
+            .title,
+            .sub {
+                text-align: center;
+                float: left;
+                font-size: 300%;
+                width: 50%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="line p400"></div>
+    <div class="line p900"></div>
+    <h1 class="title">Welcome to my home</h1>
+    <h1 class="sub">Hello World</h1>
+    <ul class="menu">
+        <li>hemo</li>
+        <li>about</li>
+        <li>blog</li>
+    </ul>
+</body>
+
+</html>

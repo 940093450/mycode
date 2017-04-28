@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>生命体 Livings</title>
+    <script src="js/angular.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            background: rgba(0, 0, 0, .4);
+        }
+        
+        .living {
+            position: fixed;
+            border: 2px solid red;
+            transition: all .5s linear;
+        }
+    </style>
+</head>
+
+<body ng-controller="myCtrl">
+    <div class="living" ng-style="{
+        width: cell.w + 'px',  height: cell.h + 'px',
+        left: cell.x +'px',  top: cell.y +'px',
+        'border-radius': cell.x1 +'% '+ cell.x2 +'% '+ cell.x3 +'% '+ cell.x4 +'% / '+
+                         cell.y1 +'% '+ cell.y4 +'% '+ cell.y3 +'% '+ cell.y2 +'%'
+    }"></div>
+</body>
+<script>
+    angular.module("myApp", [])
+        .controller("myCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
+            $scope.cell = {
+                w: 200, h: 200, s: 200 * 200,
+                x1: 0, y1: 0,
+                x2: 0, y2: 0,
+                x3: 0, y3: 0,
+                x4: 0, y4: 0,
+                x: 0, y: 0,
+                dx: 1, dy: 1,
+                sx: 100, sy: 100
+            };
+            var maxw = document.documentElement.clientWidth;
+            var maxh = document.documentElement.clientHeight;
+            var rand = function (a, b) {
+                return Math.round(Math.random() * Math.abs(b - a) + Math.min(a, b));
+            };
+            var move = function () {
+                $scope.cell.x1 = rand(25, 75);
+                $scope.cell.x2 = 100 - $scope.cell.x1;
+                $scope.cell.x3 = rand(25, 75);
+                $scope.cell.x4 = 100 - $scope.cell.x3;
+                $scope.cell.y1 = rand(25, 75);
+                $scope.cell.y4 = 100 - $scope.cell.y1;
+                $scope.cell.y2 = rand(25, 75);
+                $scope.cell.y3 = 100 - $scope.cell.y2;
+                $scope.cell.w = rand(150, 250);
+                $scope.cell.h = parseInt($scope.cell.s / $scope.cell.w);
+                $scope.cell.x += $scope.cell.sx * $scope.cell.dx;
+                $scope.cell.y += $scope.cell.sy * $scope.cell.dy;
+                if ($scope.cell.x > maxw && $scope.cell.dx > 0) {
+                    $scope.cell.x = -$scope.cell.w;
+                }
+                if ($scope.cell.x < -$scope.cell.w && $scope.cell.dx < 0) {
+                    $scope.cell.x = maxw;
+                }
+                if ($scope.cell.y > maxh && $scope.cell.dy > 0) {
+                    $scope.cell.y = -$scope.cell.h;
+                }
+                if ($scope.cell.y < -$scope.cell.h && $scope.cell.dy < 0) {
+                    $scope.cell.y = maxh;
+                }
+                $timeout(move, 500);
+            }
+            move();
+        }]);
+
+</script>
+
+</html>

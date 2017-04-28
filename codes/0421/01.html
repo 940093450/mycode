@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <script src="js/angular.min.js"></script>
+</head>
+
+<body ng-controller="myCtrl">
+    <div class="container">
+        <h1 class="page-header">AngularJS Demostation{{ username }}</h1>
+        <p class="lead">angular-v 1.6.4 + bootstrap-v3.3.7{{ pwd }}</p>
+        <div class="row">
+            <div class="col-md-6">
+                <form class="form-horizontal">
+                    <div class="form-group row">
+                        <div class="col-md-4 text-right">
+                            <label class="control-lable">用户名:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" ng-model="username">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-4 text-right">
+                            <label class="control-lable">密码:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" ng-model="pwd">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-4 text-right">
+                            <label class="control-lable">性别:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <select ng-model="sex" class="form-control">
+                                <option value="女">女士</option>
+                                <option value="男">男士</option>
+                                <option value="">保密</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-4 text-right">
+                            <label class="control-lable">性别:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="checkbox" ng-model="book"> 看书
+                            <input type="checkbox" ng-model="music"> 音乐
+                            <input type="checkbox" ng-model="food"> 美食
+                            <input type="checkbox" ng-model="sport"> 运动
+                            <input type="checkbox" ng-model="sheep"> 睡觉
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <ul class="list-group">
+                    <li class="list-group-item has-success">看书：
+                        <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-hide="!book"></span>
+                    </li>
+                    <li class="list-group-item has-success">音乐：
+                        <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-hide="!music"></span>
+                    </li>
+                    <li class="list-group-item has-success">美食：
+                        <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-hide="!food"></span>
+                    </li>
+                    <li class="list-group-item has-success">运动：
+                        <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-hide="!sport"></span>
+                    </li>
+                    <li class="list-group-item has-success">睡觉：
+                        <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-hide="!sheep"></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        var app = angular.module("myApp", []);
+        /*app.controller("myCtrl", function ($scope) {
+            console.log($scope)
+        });//作用域 scope*/
+        app.controller("myCtrl", ["$scope", function ($scope) {
+            // $scope.username = "welcome";
+            // $scope.pwd = "123";
+            $scope.sex = "女";
+            $scope.book = true;
+            $scope.music = true;
+            $scope.food = false;
+            $scope.sport = false;
+            $scope.sheep = false;
+        }]);
+    </script>
+</body>
+
+</html>

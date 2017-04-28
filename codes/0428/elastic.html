@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS 弹性原理 Elastic Principle</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <script src="js/angular.min.js"></script>
+    <style>
+        .line {
+            width: 1px;
+            background: #ddd;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 50%;
+            bottom: 0;
+        }
+        
+        .ball {
+            width: 100px;
+            height: 100px;
+            background: #39c;
+            border-radius: 50%;
+            position: fixed;
+            left: 0;
+            top: calc(50% - 50px);
+        }
+    </style>
+</head>
+
+<body ng-controller="myCtrl">
+
+    <div class="container" style="position:relative">
+        <div class="line" xng-style="{left: center + 'px'}"></div>
+        <h1 class="page-header">弹性原理 Elastic Principle</h1>
+        <div class="ball" ng-style="{left: x + 'px'}">
+
+        </div>
+        <div class="btn btn-primary btn-lg" ng-click="move()">点击</div>
+    </div>
+    <script>
+        angular.module("myApp", [])
+
+            .controller("myCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
+
+                $scope.x = 0;
+                var s = 0;///速度
+                var a = 0;//加速度
+                var dx = 1;//方向
+                var m = 0.98 //摩擦损耗
+                var maxw = document.documentElement.clientWidth;
+                $scope.center = parseInt(maxw / 2) - 50;
+                $scope.move = function () {
+                    a = ($scope.center - $scope.x)/100; //未过中心线 a > 0，过了 a < 0
+                    //dx = (a>0) ? -1 : 1
+                    
+                    s += a;
+                    s *= m;
+                    $scope.x += s;
+                    $timeout($scope.move, 20);
+                }
+
+            }]);
+    </script>
+</body>
+
+</html>

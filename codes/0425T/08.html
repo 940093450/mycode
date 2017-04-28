@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <script src="js/angular.min.js"></script>
+</head>
+
+<body ng-controller="myCtrl">
+    <div class="container">
+        <h1 class="page-header">AngularJS 的条件切换选择指令 ngSwitch</h1>
+        <p class="lead">ng-switch, ng-switch-when, ng-switch-default</p>
+        <p class="lead">比较 JavaScript 的 switch(变量){ case 值: break; } 异同</p>
+        <div class="row">
+            <div class="col-md-6">
+                <h2>城市（这个例子是用 ngShow 做的）：</h2>
+                <!--ul.list-group>(li.list-group-item>.badge.badge-)*4-->
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-danger" ng-show="city=='北京'">
+                        北京（首都）
+                        <div class="badge btn-danger">Beijing</div>
+                    </li>
+                    <li class="list-group-item list-group-item-info" ng-show="city=='天津'">
+                        天津（卫都）
+                        <div class="badge btn-info">Tianjin</div>
+                    </li>
+                    <li class="list-group-item list-group-item-success" ng-show="city=='上海'">
+                        上海（商都）
+                        <div class=" badge btn-success">Shanghai</div>
+                    </li>
+                    <li class="list-group-item list-group-item-default" ng-show="city==undefined || city==''">
+                        （城市）
+                        <div class="badge">拼音</div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h2>选择：</h2>
+                <select class="form-control" ng-model="city">
+                    <option value="">（请点击下拉选择城市……）</option>
+                    <option value="北京">京 Beijing</option>
+                    <option value="天津">津 Tianjin</option>
+                    <option value="上海">沪 Shanghai</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <script>
+        angular.module("myApp", [])
+            .controller("myCtrl", ["$scope", function ($scope) {
+            }]);
+        // var a = 100;
+        // if(a < 60){
+        //     // 不及格
+        // } else if (a < 70){
+        //     // 及格
+        // } else if (a < 80){
+        //     // 中等
+        // } else if (a < 90){
+        //     // 良好
+        // } else {
+        //     // 优秀
+        // }
+        // switch(a){
+        //     case 8:
+        //         //...
+        //         break;
+        //     case 0:
+        //         break;
+        //     case 100:
+        //         break;
+        //     default:
+        //         break;
+        // }
+    </script>
+</body>
+
+</html>

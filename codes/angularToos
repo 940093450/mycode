@@ -1,0 +1,26 @@
+////单词首字母大写
+            .filter("cap",function(){
+                return function(str){
+                    var arr = str.toLowerCase().split("");
+                    arr[0] = arr[0].toUpperCase();
+                    return arr.join("");
+                };
+            })
+
+            ///每个单词首字母大写
+            .filter("caps",function(){
+                return function(str){
+                    var arrs = str.toLowerCase().split(" ");
+                    for(var i = 0; i < arrs.length; i++){
+                        var arr = arrs[i].split("");
+                        arr[0] = arr[0].toUpperCase(); 
+                        arrs[i] = arr.join("");
+                    }
+                    return arrs.join(" ");
+                }
+            })
+
+            // 随机整数函数（最小数，最大数）
+                var rand = function (a, b) {
+                    return parseInt(Math.random() * Math.abs(b - a) + Math.min(a, b));
+                };

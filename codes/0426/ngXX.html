@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <script src="js/angular.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body ng-controller="myCtrl">
+
+    <div class="container">
+        <h1 class="page-header">Angular ngRepeat</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <h2>城市：</h2>
+                <ul class="list-group" ng-switch="city">
+                    <li ng-switch-when="北京" class="list-group-item list-group-item-danger">
+                        北京（首都）
+                        <div class="badge btn-danger">Beijing</div>
+                    </li>
+                    <li ng-switch-when="天津" class="list-group-item list-group-item-info">
+                        天津（卫都）
+                        <div class="badge btn-info">Tianjing</div>
+                    </li>
+                    <li ng-switch-when="上海" class="list-group-item list-group-item-success">
+                        上海（商都）
+                        <div class="badge btn-success">Shanghai</div>
+                    </li>
+                    <li ng-switch-default class="list-group-item list-group-item-default">
+                        （城市）
+                        <div class="badge">拼音</div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h2>选择：{{ city }}</h2>
+                <select class="form-control" ng-model="city">
+                    <option value="">（请点击下拉选择城市......）</option>
+                    <option value="北京">京 Beijing</option>
+                    <option value="天津">津 Tianjin</option>
+                    <option value="上海">沪 Shanghai</option>
+                </select>
+                <ul class="list-group"> 
+                    <li class="list-group-item" ng-class="{
+                        'list-group-item-success':city=='北京'
+                    }" ng-click="city = '北京'">北京</li>
+                    <li class="list-group-item" ng-class="{
+                        'list-group-item-success':city=='天津'
+                    }"ng-click="city = '天津'">天津</li>
+                    <li class="list-group-item" ng-class="{
+                        'list-group-item-success':city=='上海'
+                    }"ng-click="city = '上海'">上海</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        angular.module("myApp", [])
+            .controller("myCtrl", ["$scope", function ($scope) {
+
+            }]);
+    </script>
+</body>
+
+</html>

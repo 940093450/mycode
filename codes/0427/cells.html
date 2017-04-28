@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>生命体 Livings</title>
+    <script src="js/angular.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            background: rgba(0, 0, 0, .4);
+        }
+        
+        .living {
+            position: fixed;
+            border: 2px solid #fff;
+            /*transition: all .5s linear;*/
+            animation: t1 10s infinite linear;
+        }
+        
+        @keyframes t1 {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes t2 {
+            100% {
+                transform: rotate(-25deg);
+            }
+        }
+    </style>
+</head>
+
+<body ng-controller="myCtrl">
+    <div class="living" ng-repeat="cell in cells" ng-style="{
+        width: cell.w + 'px',  height: cell.h + 'px',
+        left: cell.x +'px',  top: cell.y +'px',
+        transition: cell.tr,
+        backgroundColor: cell.bg,
+        'border-radius': cell.x1 +'% '+ cell.x2 +'% '+ cell.x3 +'% '+ cell.x4 +'% / '+
+                         cell.y1 +'% '+ cell.y4 +'% '+ cell.y3 +'% '+ cell.y2 +'%'
+    }"></div>
+</body>
+<script>
+    angular.module("myApp", [])
+        .controller("myCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
+            var maxw = document.documentElement.clientWidth;;
+            var maxh = document.documentElement.clientHeight;
+            var rand = function (a, b) {
+                return Math.round(Math.random() * Math.abs(b - a) + Math.min(a, b));
+            };
+            var info = function () {
+                maxw = document.documentElement.clientWidth;
+                maxh = document.documentElement.clientHeight;
+            }
+            window.onresize = function(){
+                info();
+            }
+            $scope.cells = [];
+            $scope.max = 50;
+            console.log($scope.max);
+            for (var i = 0; i < $scope.max; i++) {
+                $scope.cells.push({
+                    w: 0, h: 0, s: 2500,
+                    x1: 0, y1: 0,
+                    x2: 0, y2: 0,
+                    x3: 0, y3: 0,
+                    x4: 0, y4: 0,
+                    x: rand(0, maxw), y: rand(0, maxh),
+                    dx: (Math.random() > .5) ? 1 : -1, dy:(Math.random() > .5) ? 1 : -1,
+                    sx: 100, sy: 100,
+                    tr: "all .5s linear",
+                    bg: "rgba(" + rand(60, 200) + "," + rand(60, 200) + "," + rand(60, 200) + "," + (rand(3, 7) / 10) + ")"
+                });
+            }
+            console.log($scope.cells[0].sx);
+            /*$scope.cell = {
+                w: 0, h: 0, s: 2500,
+                x1: 0, y1: 0,
+                x2: 0, y2: 0,
+                x3: 0, y3: 0,
+                x4: 0, y4: 0,
+                x: rand(0, maxw), y: rand(0, maxh),
+                dx: 1, dy: 1,
+                sx: 100, sy: 100,
+                tr: "all .5s linear",
+                bg: "rgba(" + rand(60, 200) + "," + rand(60, 200) + "," +
+                rand(60, 200) + "," + (rand(3, 7) / 10) + ")"
+            };*/
+            console.log($scope.cells[0].sx);
+            
+            $scope.move = function () {
+                for (var i = 0; i < $scope.cells.length; i++) {
+                    $scope.cells[i].sx = rand(10, 30);
+                    $scope.cells[i].sy = rand(10, 30);
+                    $scope.cells[i].x1 = rand(40, 60);
+                    $scope.cells[i].x2 = 100 - $scope.cells[i].x1;
+                    $scope.cells[i].x3 = rand(40, 60);
+                    $scope.cells[i].x4 = 100 - $scope.cells[i].x3;
+                    $scope.cells[i].y1 = rand(40, 60);
+                    $scope.cells[i].y4 = 100 - $scope.cells[i].y1;
+                    $scope.cells[i].y2 = rand(40, 60);
+                    $scope.cells[i].y3 = 100 - $scope.cells[i].y2;
+                    $scope.cells[i].w = rand(30, 70); // 100  30|70
+                    $scope.cells[i].h = parseInt($scope.cells[i].s / $scope.cells[i].w);
+                    $scope.cells[i].x += $scope.cells[i].sx * $scope.cells[i].dx;
+                    $scope.cells[i].y += $scope.cells[i].sy * $scope.cells[i].dy;
+                    $scope.cells[i].tr = "all .5s linear";
+                    if ($scope.cells[i].x > maxw + parseInt($scope.cells[i].w * .3) && $scope.cells[i].dx > 0) {
+                        $scope.cells[i].x = -parseInt($scope.cells[i].w * 1.2);
+                        $scope.cells[i].tr = "none";
+                    }
+                    if ($scope.cells[i].x < -parseInt($scope.cells[i].w * .7) && $scope.cells[i].dx < 0) {
+                        $scope.cells[i].x = maxw;
+                        $scope.cells[i].tr = "none";
+                    }
+                    if ($scope.cells[i].y > maxh + parseInt($scope.cells[i].h * .3) && $scope.cells[i].dy > 0) {
+                        $scope.cells[i].y = -parseInt($scope.cells[i].h * 1.2);
+                        $scope.cells[i].tr = "none";
+                    }
+                    if ($scope.cells[i].y < -parseInt($scope.cells[i].h * .7) && $scope.cells[i].dy < 0) {
+                        $scope.cells[i].y = maxh;
+                        $scope.cells[i].tr = "none";
+                    }
+                    // $scope.cell.an = "t" + rand(1, 2) + ".5s linear";
+                }
+                $timeout($scope.move, 500);
+
+            }
+            $scope.move();
+        }]);
+
+</script>
+
+</html>

@@ -1,0 +1,58 @@
+.bg_img {
+    background-image: url(https://demo.themeisle.com/azera-shop/wp-content/themes/azera-shop/images/background-images/background.jpg);
+    background-attachment: fixed;
+    background-position: top center;
+    background-size: cover;
+    height: 719px;
+}
+
+.header_box {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 11;
+}
+
+.header {
+    height: 100px;
+}
+
+.header>.row>div {
+    height: 100px;
+    box-shadow: 0 0 0 2px #ddd;
+    line-height: 100px;
+    padding: 0;
+}
+
+.nav_warp {
+    width: auto;
+    float: right;
+    height: 100%;
+}
+
+.nav_warp>li {
+    padding: 0 10px;
+    list-style: none;
+    width: auto;
+    height: 100%;
+    float: left;
+    background: #ddd;
+}
+
+.nav_warp>li>a {
+    text-decoration: none;
+}
+
+.header_serach>div {
+    width: 25px;
+    height: 46px;
+    float: left;
+    position: relative;
+    top: 27px;
+    margin-left: 22px;
+    line-height: 46px;
+}
+
+.header_serach>div>span {
+    font-size: 18px;
+}

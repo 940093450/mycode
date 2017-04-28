@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <script src="js/angular.min.js"></script>
+</head>
+
+<body ng-controller="myCtrl">
+    <div class="container">
+        <h1 class="page-header">AngularJS ngRepeat</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <!--table>(thead>tr>th*3)+(tbody>(tr>td*3)*3)+(tfoot>tr>th*3)-->
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-center">№</th>
+                            <th>
+                                姓名 {{ 1200.456 | currency :"￥ " :0 }}
+                            </th>
+                            <th>性别 {{ 1200.456 | number }}</th>
+                            <th class="text-right">生日（filter 过滤器）</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in users" ng-click="switch($index)">
+                            <!-- $index -->
+                            <td class="text-center">{{ $index + 1 }}</td>
+                            <!-- | uppercase | lowercase -->
+                            <td>{{ row.name }}</td>
+                            <td>{{ sex[row.sex] }}</td>
+                            <td class="text-right">{{ row.bday | date :"yyyy-MM-dd"}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th class="text-center">№</th>
+                            <th>Name</th>
+                            <th>Sex</th>
+                            <th class="text-right">birthDay</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <h2>用户信息</h2>
+                <div class="form-group" xng-hide="hide">
+                    <label class="control-label">姓名：</label>
+                    <input type="text" ng-model="user.name" class="form-control">
+                </div>
+                <div class="form-group" xng-show="readme">
+                    <label class="control-label">性别：</label>
+                    <select ng-model="user.sex" class="form-control">
+                        <option value="female">女士 Female</option>
+                        <option value="male">男士 Male</option>
+                    </select>
+                </div>
+                <!--<div class="form-group">
+                    <div class="btn btn-primary" ng-click="switch()">
+                        点击我
+                    </div>
+                </div>-->
+            </div>
+        </div>
+    </div>
+    <script>
+        angular.module("myApp", [])
+            .controller("myCtrl", ["$scope", function ($scope) {
+                $scope.sex = {
+                    male: "男士",
+                    female: "女士"
+                };
+                $scope.users = [
+                    {
+                        name: "Alice Wang",
+                        sex: "female",
+                        bday: (new Date("1978-3-16 8:20:00")).getTime()
+                    },
+                    {
+                        name: "Tony Lin",
+                        sex: "male",
+                        bday: (new Date("1969-5-14 0:35:00")).getTime()
+                    },
+                    {
+                        name: "William Zhang",
+                        sex: "male",
+                        bday: (new Date("1974-11-7 19:10:00")).getTime()
+                    }
+                ];
+                // $scope.readme = true;
+                // $scope.hide = false;
+                $scope.switch = function (index) {
+                    console.log(index);
+                    $scope.user = $scope.users[index];
+                    // $scope.hide = !$scope.hide;
+                    // $scope.readme = !$scope.readme;
+                    // console.log(msg + " : " + Date.now());
+                };
+                // var a = function (x) {
+                //     alert(x);
+                // };
+                // a("Hello : a()");
+                // function b(y) {
+                //     alert(y);
+                // }
+                // b("Hello : b()");
+                // var a = [1, 20, 300, 4000, "hello", true];
+                // for (var i = 0; i < a.length; i++) {
+                //     console.log("a[" + i + "] =", a[i]);
+                // }
+                // for (var key in $scope.users[2]) {
+                //     console.log(key + " : " + $scope.users[2][key]); // 键、值对
+                // }
+                // var my = new Date();
+                // var yy = my.getFullYear();
+                // var mm = my.getMonth() + 1;
+                // var dd = my.getDate();
+                // var hh = my.getHours();
+                // var ii = my.getMinutes();
+                // var ss = my.getSeconds();
+                // var uu = my.getMilliseconds();
+                // var tt = my.getTime();
+                // console.log(uu);
+                // console.log(tt);
+                // var today = Date.now();
+                // console.log(today);
+                // var s = 1391600796320;
+                // var d = new Date(s);
+                // console.log(
+                //     s + " : " +
+                //     d.getFullYear() + "年" +
+                //     (d.getMonth() + 1) + "月" +
+                //     d.getDate() + "日"
+                // );
+                // // 1000 * 60 * 60 * 24 * 365
+                // var n = s / 1000 / 60 / 60 / 24 / 365;
+                // console.log(n);
+            }]);
+    </script>
+</body>
+
+</html>

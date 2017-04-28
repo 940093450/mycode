@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <script src="js/angular.min.js"></script>
+</head>
+
+<body ng-controller="myCtrl">
+    <div class="container">
+        <h1 class="page-header">AngularJS 购物流程模拟</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <h2>货架商品清单</h2>
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>品名</th>
+                            <th class="text-right">单价</th>
+                            <th class="text-right">存量</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in store">
+                            <td>{{ $index + 1}}</td>
+                            <td>{{ row.name }}</td>
+                            <td class="text-right">{{ row.price | currency :"￥ " }}</td>
+                            <td class="text-right">{{ row.qty | number }}</td>
+                            <td>
+                                <div class="btn btn-xs btn-primary" ng-show="row.qty" ng-click="add($index)">购物车 +1</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <h2>我的购物车 {{ 'heLLo WorLD!' | cap }}</h2>
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>品名</th>
+                            <th class="text-right">单价</th>
+                            <th class="text-right">数量</th>
+                            <th class="text-right">合计</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in cart">
+                            <td>{{ $index + 1}}</td>
+                            <td>{{ row.name }}</td>
+                            <td class="text-right">{{ row.price | currency :"￥ " }}</td>
+                            <td class="text-right">{{ row.qty | number }}</td>
+                            <td class="text-right">{{ row.price * row.qty | currency :"￥ " }}</td>
+                            <td>
+                                <div class="btn btn-xs btn-warning" ng-click="del($index)">扣除 -1</div>
+                                <div class="btn btn-xs btn-danger" ng-click="remove($index)">移除 -ALL</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="6">
+                                总计：{{ cart | amt | currency:" ￥ " }}
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        angular.module("myApp", [])
+            .filter("amt", function () {
+                return function (dataArray) {
+                    var total = 0;
+                    for (var i = 0; i < dataArray.length; i++) {
+                        total += dataArray[i].price * dataArray[i].qty;
+                    }
+                    return total;
+                };
+            })
+            // lowercase // uppercase // capitalize
+            .filter("cap", function () {
+                return function (str) {
+                    var arr = str.toLowerCase().split("");
+                    arr[0] = arr[0].toUpperCase();
+                    return arr.join("");
+                };
+            })
+            // var a = "hello"
+            .controller("myCtrl", ["$scope", function ($scope) {
+                $scope.store = [
+                    {
+                        name: "电水壶",
+                        price: 85.13,
+                        qty: 5
+                    },
+                    {
+                        name: "毛巾",
+                        price: 9.5,
+                        qty: 23
+                    },
+                    {
+                        name: "肥皂",
+                        price: 5.2,
+                        qty: 12
+                    }
+                ];
+                $scope.cart = [];
+                $scope.add = function (index) {
+                    console.log(index);
+                    // 扣除货架数量
+                    if ($scope.store[index].qty > 0) {
+                        $scope.store[index].qty--;
+                    }
+                    // 添加购物车数量
+                    for (var i = 0, found = false; i < $scope.cart.length && !found; i++) {
+                        if ($scope.cart[i].name == $scope.store[index].name) {
+                            $scope.cart[i].qty++;
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        $scope.cart.push({
+                            name: $scope.store[index].name,
+                            price: $scope.store[index].price,
+                            qty: 1
+                        });
+                    }
+                };
+                $scope.del = function (index) {
+                    console.log(index);
+                    // 加回货架数量
+                    for (var i = 0, found = false; i < $scope.store.length && !found; i++) {
+                        if ($scope.store[i].name == $scope.cart[index].name) {
+                            $scope.store[i].qty++;
+                            found = true;
+                        }
+                    }
+                    // 扣除购物车数量
+                    if ($scope.cart[index].qty > 1) {
+                        $scope.cart[index].qty--;
+                    } else {
+                        $scope.cart.splice(index, 1);
+                    }
+                };
+                $scope.remove = function (index) {
+                    console.log(index);
+                    // 加回货架数量
+                    for (var i = 0, found = false; i < $scope.store.length && !found; i++) {
+                        if ($scope.store[i].name == $scope.cart[index].name) {
+                            $scope.store[i].qty += $scope.cart[index].qty;
+                            found = true;
+                        }
+                    }
+                    // 删除购物车项目
+                    $scope.cart.splice(index, 1);
+                };
+            }]);
+    </script>
+</body>
+
+</html>

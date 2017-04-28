@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <script src="js/angular.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body ng-controller="myCtrl">
+
+    <div class="container">
+        <h1 class="page-header">Angular ngRepeat</h1>
+        <div class="row">
+
+            <div class="col-md-6">
+                <!--table>(thead>tr>th*3)+(tbody>(tr>td*3)*3)+(tfeet>tr>th*3)-->
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-center">№</th>
+                            <th>
+                                姓名 {{ 1200.456 | currency : "￥ ":0 }}
+                            </th>
+                            <th>性别{{ 1200.456 | number:2 }}</th>
+                            <th class="text-right">生日(filter 过滤器)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in users" ng-click="switch($index)">
+                            <td class="text-center">{{ $index+1 }}</td>
+                            <td>{{ row.name }}</td>
+                            <td>{{ sex[row.sex] }}</td>
+                            <td class="text-right">{{ row.bday | date : "yyyy-MM-dd HH:mm" }}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th class="text-center">№</th>
+                            <th>Name</th>
+                            <th>Sex</th>
+                            <th class="text-right">birthDay</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <h2>用户信息</h2>
+                <div class="form-group" xng-hide="hide">
+                    <label class="control-label">姓名：</label>
+                    <input type="text" ng-model="user.name" class="form-control">
+                </div>
+                <div class="form-group" xng-show="readme">
+                    <label class="control-label">性别：</label>
+                    <select ng-model="user.sex" class="form-control">
+                        <option value="female">女士</option>
+                        <option value="male">男士</option>
+                    </select>
+                </div>
+                <div class="form-group" xng-hide="hide" xng-init="user.bday='0000-00-00'">
+                    <label class="control-label">生日：</label>
+                    <input type="text" ng-model="user.bday" class="form-control">
+                </div>
+                <!--<div class="form-group">
+                    <div class="btn btn-primary" ng-click="switch()">
+                        点击我
+                    </div>
+                </div>-->
+            </div>
+        </div>
+    </div>
+    <script>
+        angular.module("myApp", [])
+            .controller("myCtrl", ["$scope", function ($scope) {
+                $scope.sex = {
+                    male: "男士",
+                    female: "女士"
+                }
+                $scope.user = {
+                    bday:'0000-00-00'
+                }
+                $scope.users = [
+                    {
+                        name: "Alice Wang",
+                        sex: "female",
+                        bday: (new Date("1978-3-16 8:20:00")).getTime(),
+                    },
+                    {
+                        name: "Tony lin",
+                        sex: "male",
+                        bday: (new Date("1969-5-14 0:35:00")).getTime(),
+                    },
+                    {
+                        name: "William Zhang",
+                        sex: "male",
+                        bday: (new Date("1974-11-7 17:10:00")).getTime(),
+                    }
+                ];
+                
+                $scope.switch = function (index) {
+                    console.log(index);
+                    $scope.user = $scope.users[index];
+                    
+                }
+                
+            }]);
+    </script>
+</body>
+
+</html>

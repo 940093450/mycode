@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>生命体 Livings</title>
+    <script src="js/angular.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            background: rgba(255, 255, 128, .2);
+        }
+        
+        .living {
+            width: 200px;
+            height: 200px;
+            position: fixed;
+            left: calc(50% - 100px);
+            top: calc(50% - 100px);
+            border-radius: 30% 70% 60% 40% / 13% 87% 13% 87%;
+            border: 2px solid red;
+            transition: all .5s linear;
+        }
+    </style>
+</head>
+
+<body ng-controller="myCtrl">
+    <div class="living" ng-style="{
+        'border-radius': obj[0] +'% '+ obj[1] +'% '+ obj[2] +'% '+ obj[3] +'% / '+ obj[4] +'% '+ obj[7] +'% '+ obj[5] +'% '+ obj[6] +'%'
+    }"></div>
+</body>
+<script>
+    angular.module("myApp", [])
+        .controller("myCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
+            $scope.obj = [0, 0, 0, 0, 0, 0, 0, 0];
+            var move = function () {
+                for (var i = 0; i < 8; i += 2) {
+                    var r = Math.round(Math.random() * 50 + 25); // 25<= r <=75
+                    $scope.obj[i] = r;
+                    $scope.obj[i + 1] = 100 - r;
+                }
+                $timeout(move, 500);
+            }
+            move();
+            // var r = Math.round(Math.random() * 100); // 0 <= r <=100
+            // $scope.obj[0] = r;
+            // $scope.obj[1] = 100 - r;
+            // r = Math.round(Math.random() * 100); // 0 <= r <=100
+            // $scope.obj[2] = r;
+            // $scope.obj[3] = 100 - r;
+            // r = Math.round(Math.random() * 100); // 0 <= r <=100
+            // $scope.obj[4] = r;
+            // $scope.obj[5] = 100 - r;
+            // r = Math.round(Math.random() * 100); // 0 <= r <=100
+            // $scope.obj[6] = r;
+            // $scope.obj[7] = 100 - r;
+        }]);
+
+</script>
+
+</html>

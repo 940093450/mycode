@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <script src="js/angular.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body ng-controller="myCtrl">
+
+    <div class="container">
+        <h1 class="page-header"></h1>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-gorup">
+                    <div class="btn btn-primary" ng-if="sex!='女'">
+                        按钮
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="radio" name="sex" ng-model="sex" value="女">女士
+                    <input type="radio" name="sex" ng-model="sex" value="男">男士
+                    <input type="radio" name="sex" ng-model="sex" value="">保密
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h2>
+                    性别：{{ sex }}
+                </h2>
+                <ul>
+                    <li>ng-app</li>
+                    <li>ng-controller</li>
+                    <li>ng-model</li>
+                    <li>ng-init</li>
+                    <li>ng-show</li>
+                    <li>ng-hide</li>
+                    <li>ng-if</li>
+                    <li>ng-repeat</li>
+                    <li></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        angular.module("myApp", [])
+            .controller("myCtrl", ["$scope", function ($scope) {
+                $scope.sex = "";
+            }]);
+    </script>
+</body>
+
+</html>

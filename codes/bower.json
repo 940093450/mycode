@@ -1,0 +1,23 @@
+{
+  "name": "codes",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "lsl"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "bootstrap": "^3.3.7",
+    "font-awesome": "fontawesome#^4.7.0",
+    "angular": "^1.6.4"
+  }
+}

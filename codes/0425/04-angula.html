@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <script src="js/angular.min.js"></script>
+    <style>
+        body {
+            background: #333;
+        }
+        
+        .ball {
+            position: fixed;
+            /*border-radius: 100% 0% 100% 0% / 100% 0% 100% 0%;*/
+            border-radius: 50%;
+            /*animation: turn 3s infinite alternate;*/
+        }
+        
+        @keyframes turn {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .info {
+            width: 400px;
+            height: 40px;
+            position: absolute;
+            left: calc(50% - 200px);
+            top: calc(50% - 20px);
+            text-align: center;
+            font-size: 96px;
+            color: rgba(128, 128, 128, .6);
+        }
+    </style>
+</head>
+
+<body ng-controller="myCtrl" ng-click="move()">
+    <div class="ball" ng-repeat="ball in balls" ng-style="{
+        backgroundColor: ball.bg,
+        width: ball.d + 'px',
+        height: ball.d + 'px',
+        left: ball.x + 'px',
+        top: ball.y + 'px'
+    }"></div>
+    <h2 class="info"></h2>
+    <script>
+        angular.module("myApp", [])
+            .controller("myCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
+                var maxw, maxh;
+                // 动态取页面的宽度和高度
+                var info = function () {
+                    maxw = document.documentElement.clientWidth;
+                    maxh = document.documentElement.clientHeight;
+                    document.querySelector('.info').innerHTML = maxw + "&times;" + maxh;
+                };
+                // 跟踪页面改变事件
+                window.onresize = function () {
+                    info();
+                };
+                // 开始至少要执行一次，取屏幕宽高
+                info();
+                // 随机整数函数（最小数，最大数）
+                var rand = function (a, b) {
+                    return parseInt(Math.random() * Math.abs(b - a) + Math.min(a, b));
+                };
+                // 众多小球数据
+                $scope.balls = [];
+                $scope.max = 100;
+                for (i = 0; i < $scope.max; i++) {
+                    var r = rand(5, 80); // 小球直径 == ball 宽、高
+                    // 小球参数
+                    $scope.balls.push({
+                        d: r,
+                        x: rand(0, maxw - r), // 横坐标 x，对应小球 left px
+                        y: rand(0, maxh - r), // 纵坐标 y，对应小球 top px
+                        dx: (Math.random() > .5) ? 1 : -1, // 随机方向
+                        dy: (Math.random() > .5) ? 1 : -1, // 随机方向
+                        sx: rand(5, 20), // 随机水平方向的速度
+                        sy: rand(5, 20), // 随机垂直方向的速度
+                        // 随机背景色 rgb(r,g,b) 或 rgba(r,g,b, a)
+                        //bg: "rgb(" + rand(0, 255) + ", " + rand(0, 255) + ", " + rand(0, 255) + ")"
+                        bg: "rgba(" + rand(50, 220) + "," + rand(50, 220) + "," + rand(50, 220) + "," + (rand(2, 8) / 10) + ")"
+                    });
+                }
+                // 小球运动定时器函数
+                $scope.move = function () {
+                    for (var i = 0; i < $scope.balls.length; i++) {
+                        $scope.balls[i].x += $scope.balls[i].sx * $scope.balls[i].dx;
+                        $scope.balls[i].y += $scope.balls[i].sy * $scope.balls[i].dy;
+                        // 小球运动方式（模式由界定判断方法决定）：反弹
+                        if ($scope.balls[i].x >= maxw - $scope.balls[i].d) {
+                            $scope.balls[i].x = maxw - $scope.balls[i].d; // 修正 x 位置
+                            $scope.balls[i].dx = -1;
+                        }
+                        if ($scope.balls[i].x <= 0) {
+                            $scope.balls[i].dx = 1;
+                        }
+                        if ($scope.balls[i].y >= maxh - $scope.balls[i].d) {
+                            $scope.balls[i].y = maxh - $scope.balls[i].d; // 修正 y 位置
+                            $scope.balls[i].dy = -1;
+                        }
+                        if ($scope.balls[i].y <= 0) {
+                            $scope.balls[i].dy = 1;
+                        }
+                    };
+                    $timeout($scope.move, 50);
+                }
+                var run = false;
+                $scope.click = function(){
+                    if(run) return;
+                    $scope.move();
+                    run = true;
+                }
+                //move();
+                // console.log($scope.move)
+                // $scope.move();
+                
+                /*document.querySelector("html").addEventListener("click", function () {
+                    if (c) {
+                        $scope.move();
+                        c = false;
+                    } else {
+                        console(1);
+                        $scope.$on('destroy', function () {
+                            $timeout.cancel($scope.move);
+                        })
+                    }
+                    //$scope.move();
+                })*/
+            }]);
+    </script>
+</body>
+
+</html>

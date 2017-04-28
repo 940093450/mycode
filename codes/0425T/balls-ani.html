@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <script src="js/angular.min.js"></script>
+    <style>
+        body {
+            background: #333;
+        }
+        
+        .ball {
+            /*width: 100px;*/
+            /*height: 100px;*/
+            /*background-color: #39c;*/
+            /*display: inline-block;*/
+            position: fixed;
+            /*left: 0;*/
+            /*top: 0;*/
+            /*left: calc(50% - 100px);*/
+            /*top: calc(50% - 100px);*/
+            /* border-radius: LT-X RT-X RB-X LB-X / LT-Y RT-Y RB-Y LB-Y;  */
+            border-radius: 100% 0% 100% 0% / 100% 0% 100% 0%;
+            /*border-radius: 50%;*/
+            /*animation: turn 3s infinite alternate;*/
+        }
+        
+        @keyframes turn0 {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes turn1 {
+            100% {
+                transform: rotate(-360deg);
+            }
+        }
+        
+        .info {
+            width: 400px;
+            height: 40px;
+            position: absolute;
+            left: calc(50% - 200px);
+            top: calc(50% - 20px);
+            text-align: center;
+            font-size: 96px;
+            color: rgba(128, 128, 128, .6);
+        }
+    </style>
+</head>
+
+<body xng-controller="myCtrl">
+    <!--<div class="ball"></div>-->
+    <h2 class="info"></h2>
+    <script>
+        var maxw, maxh;
+        // 动态取页面的宽度和高度
+        function info() {
+            maxw = document.documentElement.clientWidth;
+            maxh = document.documentElement.clientHeight;
+            document.querySelector('.info').innerHTML = maxw + "&times;" + maxh;
+        }
+        // 跟踪页面改变事件
+        window.onresize = function () {
+            info();
+        };
+        // 开始至少要执行一次，取屏幕宽高
+        info();
+        // body 对象
+        var $body = document.querySelector("body");
+        // 随机整数函数（最小数，最大数）
+        function rand(a, b) {
+            return parseInt(Math.random() * Math.abs(b - a) + Math.min(a, b));
+        }
+        // 众多小球数据
+        var balls = [];
+        var max = 100;
+        var str = "";
+        for (var i = 0; i < max; i++) {
+            str += '<div class="ball"></div>';
+        }
+        $body.innerHTML += str;
+        var objs = document.querySelectorAll('.ball');
+        console.log(objs);
+        for (i = 0; i < max; i++) {
+            var r = rand(5, 80); // 小球直径 == ball 宽、高
+            // 小球参数
+            balls.push({
+                obj: objs[i],
+                d: r,
+                x: rand(0, maxw - r), // 横坐标 x，对应小球 left px
+                y: rand(0, maxh - r), // 纵坐标 y，对应小球 top px
+                dx: (Math.random() > .5) ? 1 : -1, // 随机方向
+                dy: (Math.random() > .5) ? 1 : -1, // 随机方向
+                sx: rand(1, 10), // 随机水平方向的速度
+                sy: rand(1, 10), // 随机垂直方向的速度
+                // 随机背景色 rgb(r,g,b) 或 rgba(r,g,b, a)
+                //bg: "rgb(" + rand(0, 255) + ", " + rand(0, 255) + ", " + rand(0, 255) + ")"
+                bg: "rgba(" + rand(50, 220) + "," + rand(50, 220) + "," + rand(50, 220) + "," + (rand(2, 8) / 10) + ")",
+                ani: "turn" + ((Math.random() > .5) ? 1 : 0) + " " + rand(1, 6) + "s infinite linear"
+            });
+        }
+        // var x = 
+        // var y = 
+        // var d = ; 
+        // var dx = 
+        // var dy = 
+        // var sx = 
+        // var sy = 
+        // // 
+        // var bg = ;
+        // 小球运动定时器函数
+        function move() {
+            for (var i = 0; i < balls.length; i++) {
+                balls[i].x += balls[i].sx * balls[i].dx;
+                balls[i].y += balls[i].sy * balls[i].dy;
+                // 小球运动方式（模式由界定判断方法决定）：反弹
+                if (balls[i].x >= maxw - balls[i].d) {
+                    balls[i].x = maxw - balls[i].d; // 修正 x 位置
+                    balls[i].dx = -1;
+                }
+                if (balls[i].x <= 0) {
+                    balls[i].dx = 1;
+                }
+                if (balls[i].y >= maxh - balls[i].d) {
+                    balls[i].y = maxh - balls[i].d; // 修正 y 位置
+                    balls[i].dy = -1;
+                }
+                if (balls[i].y <= 0) {
+                    balls[i].dy = 1;
+                }
+                // 小球定位、绘制
+                balls[i].obj.style.width = balls[i].d + "px";
+                balls[i].obj.style.height = balls[i].d + "px";
+                balls[i].obj.style.background = balls[i].bg;
+                balls[i].obj.style.left = balls[i].x + "px";
+                balls[i].obj.style.top = balls[i].y + "px";
+                balls[i].obj.style.animation = balls[i].ani;
+            }
+            setTimeout(move, 50);
+        }
+        move();
+    </script>
+</body>
+
+</html>

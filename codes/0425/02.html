@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <script src="js/angular.min.js"></script>
+    <title>Document</title>
+    <style>
+        body {
+            background: #333;
+        }
+        
+        .ball {
+            width: 150px;
+            height: 150px;
+            background-color: #39c;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 100% 0% 100% 0%/100% 0% 100% 0%;  
+            animation: turn 1s infinite alternate;
+        }
+        @keyframes turn{
+            100%{
+                transform: rotate(360deg);
+            }
+        }
+        .desk {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: #cd5;
+        }
+    </style>
+</head>
+
+
+<body xng-controller="myCtrl">
+    <!--<div class="desk"></div>-->
+    <div class="ball"></div>
+    <h2 id="info"></h2>
+    <script>
+        var maxw, maxh;
+        function info() {
+            maxw = document.documentElement.clientWidth;
+            maxh = document.documentElement.clientHeight;
+            document.querySelector("#info").innerHTML = maxw + "&times" + maxh;
+        }
+        window.onresize = function () {
+            info();
+        }
+        info();
+        var obj = document.querySelector(".ball");
+        function rand(a, b) {
+            return parseInt(Math.random() * Math.abs(b - a) + Math.min(a, b));
+        }
+        var d = rand(5, 200);
+        var x = rand(0, maxw - 150);
+        var y = rand(0, maxh - 150);
+        var dx = (Math.random() > .5) ? 1 : -1,
+            dy = (Math.random() > .5) ? 1 : -1;
+        var sx = rand(1, 10);
+        var sy = rand(1, 10);
+        var bg = "rgb("+rand(0,255)+","+rand(0,255)+","+rand(0,255)+")";
+        setInterval(function () {
+            x += sx * dx;
+            y += sy * dy;
+            if (x >= (maxw - d)) {
+                x = maxw - d;
+                dx = -1;
+            }
+            if (x <= 0) {
+                dx = 1;
+            }
+            if (y >= (maxh - d)) {
+                y = maxh - d
+                dy = -1;
+            }
+            if (y <= 0) {
+                dy = 1;
+            }
+            obj.style.left = x + "px";
+            obj.style.top = y + "px";
+            obj.style.width = d + "px";
+            obj.style.height = d + "px";
+            obj.style.background = bg;
+        }, 10)
+    </script>
+</body>
+
+</html>

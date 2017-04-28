@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <script src="js/angular.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body ng-controller="myCtrl">
+
+    <div class="container">
+        <h1 class="page-header">Angular ngRepeat</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Name(姓名)</th>
+                            <th>Gender(性别)</th>
+                            <th>Health(健康)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in users" ng-click="switch($index)">
+                            <td>{{ row.name }} ({{ name[row.name] }})</td>
+                            <td>{{ row.gender }} ({{ gender[row.gender] }})</td>
+                            <td>{{ row.health }} ({{ health[row.health] }})</td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">姓名</label>
+                    <input type="text" ng-model="user.name" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">性别</label>
+                    <select  ng-model="user.gender" class="form-control">
+                        <option value="female">女</option>
+                        <option value="male">男</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">健康</label>
+                    <input type="text" ng-model="user.health" class="form-control">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        angular.module("myApp", [])
+            .controller("myCtrl", ["$scope", function ($scope) {
+                $scope.name = {
+                    Tom:"汤姆",
+                    Mary:"玛丽",
+                    Peter:"彼得"
+                }
+                $scope.gender = {
+                    male:"男",
+                    female:"女"
+
+                }
+                $scope.health = {
+                    yes:"健康",
+                    no:"不健康"
+                }
+                $scope.users = [
+                    {
+                        name: 'Tom',
+                        gender: 'male',
+                        health: 'yes'
+                    },
+                    {
+                        name: 'Mary',
+                        gender: 'female',
+                        health: 'yes'
+                    },
+                    {
+                        name: 'Peter',
+                        gender: 'male',
+                        health: 'no'
+                    }
+                ];
+                $scope.switch = function(index){
+                    $scope.user = $scope.users[index]
+                }
+            }]);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <script src="js/angular.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body ng-controller="myCtrl">
+
+    <div class="container">
+        <h1 class="page-header">Angular ngRepeat</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <h2>城市：{{ city }}</h2>
+                <ul ng-switch="cityName" class="list-group">
+                    <li ng-repeat="row in data" xng-switch-when="{{ row.name }}" class="list-group-item">
+                        {{ row.name }}（{{ row.dsc }}）
+                        <div class="badge">{{ row.py }}</div>
+                    </li>
+                    <li ng-switch-default class="list-group-item">
+                        城市
+                        <div class="badge">（pinyin）</div>
+                    </li>
+                    <!--<li ng-switch-when="上海" class="list-group-item list-group-item-success">
+                        上海（商都）
+                        <div class="badge btn-success">Shanghai</div>
+                    </li>
+                    <li ng-switch-default class="list-group-item list-group-item-default">
+                        （城市）
+                        <div class="badge">拼音</div>
+                    </li>-->
+                </ul>
+                <!--(.form-group>input[ng-model=info].form-control)*3-->
+                <div class="form-group">
+                    <input type="text" ng-model="info.name" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input type="text" ng-model="info.py" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input type="text" ng-model="info.dsc" class="form-control">
+                </div>
+                <pre>{{ info | json }}</pre>
+            </div>
+            <div class="col-md-6">
+                <h2>选择：{{ city }}</h2>
+                <ul class="list-group">
+                    <li ng-repeat="row in data" class="list-group-item" ng-class="{
+                        'list-group-item-success':$parent.cityName == row.name
+                    }" ng-click="set($index)">{{ row.name }}</li>
+                </ul>
+                <!--<select ng-model="city" class="form-control">
+                    <option value="">（请选择城市......）</option>
+                    <option value="{{ row.name }}" ng-repeat="row in data">
+                        {{ row.name }}（{{ row.py }}）
+                    </option>
+                </select>-->
+                <h2>{{ info }}</h2>
+                <select ng-model="info" ng-options="row.name +'（'+row.py+'）,'+row.dsc for row in data" class="form-control">
+                    <option value="">（请选择城市......）</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <script>
+        angular.module("myApp", [])
+            .controller("myCtrl", ["$scope", function ($scope) {
+                $scope.data = [
+                    {
+                        name: "北京",
+                        py: "beijing",
+                        dsc: "首都"
+                    },
+                    {
+                        name: "天津",
+                        py: "tianjin",
+                        dsc: "卫都"
+                    },
+                    {
+                        name: "上海",
+                        py: "shanghai",
+                        dsc: "商都"
+                    }
+                ];
+                $scope.set = function(index){
+                    console.log(index);
+                    $scope.cityName = $scope.data[index].name;
+                }
+            }]);
+    </script>
+</body>
+
+</html>

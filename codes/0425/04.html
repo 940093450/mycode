@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <script src="js/angular.min.js"></script>
+    <title>Document</title>
+    <style>
+        body {
+            /*background: url(xuehua.png) no-repeat;*/
+            background-size: 100% 800px;
+            background: #333;
+            overflow: hidden
+        }
+        
+        .ball {
+            /*width: 100px;
+            height: 100px;
+            background-color: #39c;*/
+            /*display: inline-block;*/
+            position: absolute;
+            /*top: 0;
+            left: 0;*/
+            border-radius: 50%;
+            /*border-radius: 100% 0% 100% 0%/100% 0% 100% 0%;*/
+            /*animation: turn 1s infinite alternate;*/
+            box-shadow: 35px 35px 8px #fff;
+        }
+        /*@keyframes turn {
+            100% {
+                transform: rotate(360deg);
+            }
+        }*/
+        
+        #info {
+            color: #666;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            z-index: 100;
+        }
+    </style>
+</head>
+
+
+<body xng-controller="myCtrl">
+    <!--<div class="desk"></div>-->
+    <!--<div class="ball"></div>-->
+    <h2 id="info"></h2>
+    <script>
+        var maxw, maxh;
+        function info() {
+            maxw = document.documentElement.clientWidth;
+            maxh = document.documentElement.clientHeight;
+            
+        }
+        window.onresize = function () {
+            info();
+        }
+        info();
+        //body对象
+        var $body = document.querySelector("body");
+        //随机整数函数（最小值，最大值）
+        function rand(a, b) {
+            return parseInt(Math.random() * Math.abs(b - a) + Math.min(a, b));
+        }
+        //众多小球数据
+        var balls = [
+            /*{
+                obj:null,
+                d: 10,
+                x: 0,
+                y: 0,
+                dx: 1,
+                dy: -1,
+                sx: 5,
+                sy: 10,
+                bg:"rgb(100,200,190)"
+            }*/
+        ];
+        var max = 300;
+        var str = "";
+        for (var i = 0; i < max; i++) {
+            str += '<div class="ball"></div>';
+        }
+        $body.innerHTML += str;
+        var objs = document.querySelectorAll('.ball');
+        //console.log(objs);
+        ////多个小球参数////
+        for (i = 0; i < max; i++) {
+            var r = rand(3, 15);//小球直径 == ball 宽 高
+            balls.push({
+                obj: objs[i],
+                d: r,
+                x: rand(0, maxw - r),//横坐标x 对应小球left
+                y: rand(0, maxh - r),//纵坐标y 对应小球top
+                // dx: (Math.random() > .5) ? 1 : -1,//随机方向
+                dx:1,
+                // dy: (Math.random() > .5) ? 1 : -1,//随机方向
+                dy:1,
+                sx: rand(8, 15),//随机水平方向的速度
+                sy: rand(6, 10),//随机水平方向的速度
+                smx: rand(1, 9),//随机水平方向的速度
+                smy: rand(1, 9),//随机水平方向的速度
+                ////随机背景色rgb（r,g,b）或rgba(r,g,b a)/////
+                // bg: "rgba(" + rand(0, 255) + "," + rand(0, 255) + "," + rand(0, 255) + ","+rand(2,8)/10+")"
+                // bg:"rgba(255,255,255,0.8)"
+            });
+        }
+        
+        var bg = "rgb(" + rand(50, 220) + "," + rand(50, 220) + "," + rand(50, 220) + ")";
+        setInterval(function () {
+            for (var i = 0; i < balls.length; i++) {
+                if(balls[i].d >= 8){
+                    balls[i].x += balls[i].sx * balls[i].dx;
+                    balls[i].y += balls[i].sy * balls[i].dy;
+                }else{
+                    balls[i].x += balls[i].smx * balls[i].dx;
+                    balls[i].y += balls[i].smy * balls[i].dy;
+                }
+                if(balls[i].x >= maxw && balls[i].dx > 0){
+                    balls[i].x = -balls[i].d;
+                }
+                if (balls[i].x <= 0 && balls[i].dx < 0) {
+                    balls[i].x = maxw
+                    // balls[i].dx = 1;
+                }
+                if(balls[i].y >= maxh && balls[i].dy > 0){
+                    balls[i].y = -balls[i].d;
+                }
+                if (balls[i].y <= 0 && balls[i].dy < 0) {
+                    balls[i].y = maxh;
+                    // balls[i].dx = 1;
+                }
+                ////小球定位、绘制
+                balls[i].obj.style.left = balls[i].x + "px";
+                balls[i].obj.style.top = balls[i].y + "px";
+                balls[i].obj.style.width = balls[i].d + "px";
+                balls[i].obj.style.height = balls[i].d + "px";
+                balls[i].obj.style.background = balls[i].bg;
+            }
+        }, 20)
+    </script>
+</body>
+
+</html>

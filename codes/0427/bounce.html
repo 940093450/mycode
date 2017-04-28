@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS 弹跳球模拟 Bounce</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <script src="js/angular.min.js"></script>
+    <style>
+        body{
+            background: #333;
+        }
+        .ball {
+            width: 100px;
+            height: 100px;
+            border: 2px solid #fff;
+            background: rgba(66,165,245,0.3);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transition:opacity 0.5s;
+        }
+    </style>
+</head>
+
+<body ng-controller="myCtrl">
+    <div class="ball" ng-repeat="ball in balls" ng-style="{
+        top:ball.y+'px',
+        left:ball.x+'px',
+        opacity:ball.op,
+    }"></div>
+    <div class="btn btn-primary" ng-click="move()">Start</div>
+    <!--<pre>{{ ball | json }}</pre>-->
+    <script>
+        angular.module("myApp", [])
+            .controller("myCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
+                var maxh = document.documentElement.clientHeight;
+                var maxw = document.documentElement.clientWidth;
+                var rand = function (a, b) {
+                    return Math.round(Math.random() * Math.abs(b - a) + Math.min(a, b));
+                };
+                $scope.balls = [];
+                $scope.max = 20;
+
+                for (var i = 0; i < $scope.max; i++) {
+                    var sxr = rand(15, 25)
+                    $scope.balls.push({
+                        x: rand(maxw * 0.35, maxw * 0.55), y: rand(maxh * 0.2, maxh * 0.4),
+                        dx: (Math.random() > .5) ? 1 : -1, dy: 1,
+                        sx: rand(5, 35), sy: 0,
+                        a: 0.98, wa: 0.995, m: (Math.random()+11)/10,
+                        op:1
+                    })
+                }
+                /*$scope.ball = {
+                    x: 0, y: 0,
+                    dx: 1, dy: 1,
+                    sx: 20, sy: 0,
+                    a: 0.98, wa: 0.99, m: 1.15,
+                }*/
+
+                $scope.move = function () {
+
+                    for (var i = 0; i < $scope.balls.length; i++) {
+
+                        $scope.balls[i].sy += $scope.balls[i].a;
+                        $scope.balls[i].y += $scope.balls[i].sy * $scope.balls[i].dy;
+                        if ($scope.balls[i].y > maxh - 100) {
+                            $scope.balls[i].y = maxh - 100;
+                            $scope.balls[i].dy = -$scope.balls[i].dy;
+                            $scope.balls[i].a = $scope.balls[i].a * $scope.balls[i].m;
+                            $scope.balls[i].a = -$scope.balls[i].a
+                        }
+                        if ($scope.balls[i].a >= 28) {
+                            $scope.balls[i].sy = 0;
+
+                            $scope.balls[i].a = 0;
+                        }
+                        $scope.balls[i].sx = $scope.balls[i].sx * $scope.balls[i].wa;
+                        $scope.balls[i].x += $scope.balls[i].sx * $scope.balls[i].dx;
+                        if ($scope.balls[i].x > maxw - 100) {
+                            $scope.balls[i].x = maxw - 100;
+                            $scope.balls[i].dx = -$scope.balls[i].dx;
+
+                        }
+                        if ($scope.balls[i].x <= 0) {
+                            $scope.balls[i].dx = -$scope.balls[i].dx;
+
+                        }
+                        if ($scope.balls[i].sx <= 0.8) {
+                            $scope.balls[i].sx = 0
+
+                        }
+                        if($scope.balls[i].sx == 0 && $scope.balls[i].sy==0){
+                            $scope.balls[i].op=0
+                        }
+                    }
+
+                    $timeout($scope.move, 15)
+
+                };
+            }]);
+    </script>
+</body>
+
+</html>

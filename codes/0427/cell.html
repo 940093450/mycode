@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>生命体 Livings</title>
+    <script src="js/angular.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            background: rgba(0, 0, 0, .4);
+        }
+        
+        .living {
+            position: fixed;
+            border: 2px solid #fff;
+            /*transition: all .5s linear;*/
+            animation: t1 10s infinite linear;
+        }
+        
+        @keyframes t1 {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes t2 {
+            100% {
+                transform: rotate(-25deg);
+            }
+        }
+    </style>
+</head>
+
+<body ng-controller="myCtrl">
+    <div class="living" ng-style="{
+        width: cell.w + 'px',  height: cell.h + 'px',
+        left: cell.x +'px',  top: cell.y +'px',
+        transition: cell.tr,
+        backgroundColor: cell.bg,
+        'border-radius': cell.x1 +'% '+ cell.x2 +'% '+ cell.x3 +'% '+ cell.x4 +'% / '+
+                         cell.y1 +'% '+ cell.y4 +'% '+ cell.y3 +'% '+ cell.y2 +'%'
+    }"></div>
+</body>
+<script>
+    angular.module("myApp", [])
+        .controller("myCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
+            var maxw = document.documentElement.clientWidth;
+            var maxh = document.documentElement.clientHeight;
+            var rand = function (a, b) {
+                return Math.round(Math.random() * Math.abs(b - a) + Math.min(a, b));
+            };
+            $scope.cell = {
+                w: 0, h: 0, s: 2500,
+                x1: 0, y1: 0,
+                x2: 0, y2: 0,
+                x3: 0, y3: 0,
+                x4: 0, y4: 0,
+                x: rand(0, maxw), y: rand(0, maxh),
+                dx: 1, dy: 1,
+                sx: 100, sy: 100,
+                tr: "all .5s linear",
+                bg: "rgba(" + rand(60, 200) + "," + rand(60, 200) + "," +
+                rand(60, 200) + "," + (rand(3, 7) / 10) + ")"
+            };
+            var move = function () {
+                $scope.cell.sx = rand(10, 30);
+                $scope.cell.sy = rand(10, 30);
+                $scope.cell.x1 = rand(40, 60);
+                $scope.cell.x2 = 100 - $scope.cell.x1;
+                $scope.cell.x3 = rand(40, 60);
+                $scope.cell.x4 = 100 - $scope.cell.x3;
+                $scope.cell.y1 = rand(40, 60);
+                $scope.cell.y4 = 100 - $scope.cell.y1;
+                $scope.cell.y2 = rand(40, 60);
+                $scope.cell.y3 = 100 - $scope.cell.y2;
+                $scope.cell.w = rand(30, 70); // 100  30|70
+                $scope.cell.h = parseInt($scope.cell.s / $scope.cell.w);
+                $scope.cell.x += $scope.cell.sx * $scope.cell.dx;
+                $scope.cell.y += $scope.cell.sy * $scope.cell.dy;
+                $scope.cell.tr = "all .5s linear";
+                if ($scope.cell.x > maxw + parseInt($scope.cell.w * .3) && $scope.cell.dx > 0) {
+                    $scope.cell.x = -parseInt($scope.cell.w * 1.2);
+                    $scope.cell.tr = "none";
+                }
+                if ($scope.cell.x < -parseInt($scope.cell.w * .7) && $scope.cell.dx < 0) {
+                    $scope.cell.x = maxw;
+                    $scope.cell.tr = "none";
+                }
+                if ($scope.cell.y > maxh + parseInt($scope.cell.h * .3) && $scope.cell.dy > 0) {
+                    $scope.cell.y = -parseInt($scope.cell.h * 1.2);
+                    $scope.cell.tr = "none";
+                }
+                if ($scope.cell.y < -parseInt($scope.cell.h * .7) && $scope.cell.dy < 0) {
+                    $scope.cell.y = maxh;
+                    $scope.cell.tr = "none";
+                }
+                // $scope.cell.an = "t" + rand(1, 2) + ".5s linear";
+                $timeout(move, 500);
+            }
+            move();
+        }]);
+
+</script>
+
+</html>

@@ -1,0 +1,12 @@
+{
+    "user": [
+        "Alice",
+        "Tony",
+        "Willian"
+    ],
+    "addr": {
+        "home":"Shanghai",
+        "job":"Nanjing"
+    },    
+    "mobile": []
+}
